@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUsers } from "./state/usersSlice";
-import UserListItem from "../../components/UserListItem";
 import { ImSpinner10 } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import Users from "../../components/Users";
@@ -67,11 +66,6 @@ const ViewAllUsers = () => {
               Users Profiles
             </h1>
           </div>
-          {/* <div className="grid sm:grid-cols-2 md:grid-cols-3 mt-2 gap-4 items-center justify-center">
-            {users.map((user, index) => {
-              return <UserListItem key={user._id} user={user} />;
-            })}
-          </div> */}
           <Users users={currentUsers} loading={isLoading} />
           <Pagination
             itemsPerPage={usersPerPage}
