@@ -4,6 +4,8 @@ import { fetchUsers } from "./state/usersSlice";
 import UserListItem from "../../components/UserListItem";
 import { ImSpinner10 } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
+import Users from "../../components/Users";
+import Pagination from "../../components/Pagination";
 
 const ViewAllUsers = () => {
   const dispatch = useDispatch();
@@ -14,6 +16,17 @@ const ViewAllUsers = () => {
   const isAuthenticated = useSelector((state) => state.auth.user !== null);
 
   const [showAlert, setShowAlert] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(10);
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const timerId = useRef(null);
 
@@ -54,11 +67,18 @@ const ViewAllUsers = () => {
               Users Profiles
             </h1>
           </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 mt-2 gap-4 items-center justify-center">
+          {/* <div className="grid sm:grid-cols-2 md:grid-cols-3 mt-2 gap-4 items-center justify-center">
             {users.map((user, index) => {
               return <UserListItem key={user._id} user={user} />;
             })}
-          </div>
+          </div> */}
+          <Users users={currentUsers} loading={isLoading} />
+          <Pagination
+            itemsPerPage={usersPerPage}
+            totalItems={users.length}
+            paginate={paginate}
+            activePage={currentPage}
+          />
         </>
       ) : (
         <div className="w-full h-full flex items-center justify-center">
